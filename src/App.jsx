@@ -57,7 +57,7 @@ function App() {
         ) : (
           <>
             <div className="w-full h-full absolute inset-0">
-              <img src={Light} className="object-cover w-full h-full" />
+              <img src={Light} className="object-cover w-full h-full object-left" />
             </div>
             <div className="absolute inset-0 overflow-hidden h-full w-full">
               <motion.div
