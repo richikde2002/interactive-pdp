@@ -4,8 +4,7 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        "google-sans": ['"Google Sans"', "sans-serif"],
-        "google-sans-regular": ['"Google Sans Regular"', "sans-serif"],
+        googleSans: ['GoogleSans', 'sans-serif'],
       },
       screens: {
         sm: "640px", // Small screens and up
