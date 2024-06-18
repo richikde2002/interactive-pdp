@@ -70,8 +70,8 @@ function App() {
             </div>
 
             <div className="text-white text-center font-googleSans z-50 flex flex-col gap-2 md:gap-4">
-              <h1 className="text-2xl md:text-4xl font-medium tracking-wide">Night Sight</h1>
-              <p className="text-sm md:text-xl tracking-wide">
+              <h1 className="text-3xl md:text-4xl font-medium tracking-wide">Night Sight</h1>
+              <p className="text-lg md:text-xl tracking-wide">
                 Capture city lights, starry skies,<br />
                 and portraits in low light.
               </p>
@@ -82,7 +82,7 @@ function App() {
                 {!clicked && (
                   <img
                     src={Tooltip}
-                    className="absolute -top-16 h-14 left-[50%] -translate-x-[50%]"
+                    className="absolute -top-16 h-14 md:h-[4.5rem] md:-top-[5rem] left-[50%] -translate-x-[50%]"
                     alt="Tooltip"
                   />
                 )}
