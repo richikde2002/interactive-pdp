@@ -1,12 +1,16 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Dark from "./assets/Night Sight Dark.png";
 import Light from "./assets/Night Sight Light.png";
 import Moon from "./assets/clear_night.png";
 import Tooltip from './assets/tooltip.png';
 import LoadingScreen from "./components/LoadingScreen";
+import { v4 as uuid } from 'uuid';
 
 const assets = [Dark, Light, Moon, Tooltip];
+
+const timeRef = Date.now();
+console.log(timeRef);
 
 function App() {
   const [loadedAssets, setLoadedAssets] = useState([]);
@@ -16,8 +20,57 @@ function App() {
   const [clicked, setClicked] = useState(false);
   const [reveal, setReveal] = useState(false);
 
+  const uuidRef = useRef(uuid());
+
+  const handleAnalytics = (type) => {
+    const timeSpent = (Date.now() - parseInt(timeRef)) / 1000;
+    const obj = {
+      type: type,
+      timeSpent: type === "enter" ? null : timeSpent,
+      session: uuidRef.current,
+      feature: 'NightSight',
+    };
+    console.log(obj);
+
+    fetch("https://c2sanalytics-ahvbc6mj5q-uc.a.run.app/api/log", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      keepalive: true,
+      body: JSON.stringify(obj)
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  };
+
   useEffect(() => {
     loadAssets(assets);
+  }, []);
+
+  useEffect(() => {
+    handleAnalytics('enter');
+
+    const beforeUnloadHandler = () => {
+      handleAnalytics('exit');
+    };
+
+    window.addEventListener('beforeunload', beforeUnloadHandler);
+
+    return () => {
+      window.removeEventListener('beforeunload', beforeUnloadHandler);
+      handleAnalytics('exit');
+    };
   }, []);
 
   useEffect(() => {
@@ -89,7 +142,10 @@ function App() {
                 {!reveal && (
                   <div
                     className="relative h-16 w-16 cursor-pointer"
-                    onClick={() => setClicked(true)}
+                    onClick={() => {
+                      handleAnalytics('nightSight-btn-click')
+                      setClicked(true)
+                    }}
                   >
                     {clicked && (
                       <motion.svg
