@@ -6,18 +6,19 @@ import Moon from "./assets/clear_night.png";
 import Tooltip from './assets/tooltip.png';
 import LoadingScreen from "./components/LoadingScreen";
 import { v4 as uuid } from 'uuid';
+import Thumbnail from './assets/NightSight-Thumbnail.png';
 
-const assets = [Dark, Light, Moon, Tooltip];
+const assets = [Dark, Light, Moon, Tooltip, Thumbnail];
 
 const timeRef = Date.now();
 console.log(timeRef);
 
 function App() {
-  const [loadedAssets, setLoadedAssets] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [progress, setProgress] = useState(0);
 
   const [clicked, setClicked] = useState(false);
+  const [entered, setEntered] = useState(false);
   const [reveal, setReveal] = useState(false);
 
   const uuidRef = useRef(uuid());
@@ -112,7 +113,6 @@ function App() {
         };
       });
     }
-    setLoadedAssets(loaded);
     setIsLoading(false);
   };
 
@@ -121,6 +121,15 @@ function App() {
       <div className="unity-canvas box-border relative max-w-full flex flex-col justify-between overflow-hidden mx-auto aspect-ratio-16/9 h-[80vh] w-[45vh] px-4 pt-12 pb-2">
         {isLoading ? (
           <LoadingScreen progress={progress} />
+        ) : !entered ? (
+          <>
+            <div className="w-full h-full absolute inset-0">
+              <img src={Thumbnail} className="object-cover w-full h-full object-center" />
+              <button onClick={() => setEntered(true)} className="bg-[#017EEA] hover:bg-[#1c629f] transition shadow-xl px-8 py-3 absolute left-[50%] -translate-x-[50%] bottom-[15%] text-white font-medium text-lg rounded-full">
+                Try Now
+              </button>
+            </div>
+          </>
         ) : (
           <>
             <div className="w-full h-full absolute inset-0">
