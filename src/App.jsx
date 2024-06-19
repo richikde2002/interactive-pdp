@@ -28,7 +28,7 @@ function App() {
       type: type,
       timeSpent: type === "enter" ? null : timeSpent,
       session: uuidRef.current,
-      feature: 'NightSight',
+      feature: 'BestTake',
     };
     console.log(obj);
 
@@ -65,10 +65,24 @@ function App() {
       handleAnalytics('exit');
     };
 
-    window.addEventListener('beforeunload', beforeUnloadHandler);
+    const visibilityChangeHandler = () => {
+      if (document.visibilityState === 'hidden') {
+        handleAnalytics('exit');
+      }
+    };
+
+    const blurHandler = () => {
+      handleAnalytics('exit b');
+    };
+
+    // window.addEventListener('beforeunload', beforeUnloadHandler);
+    document.addEventListener('visibilitychange', visibilityChangeHandler);
+    // window.addEventListener('blur', blurHandler);
 
     return () => {
-      window.removeEventListener('beforeunload', beforeUnloadHandler);
+      // window.removeEventListener('beforeunload', beforeUnloadHandler);
+      document.removeEventListener('visibilitychange', visibilityChangeHandler);
+      // window.removeEventListener('blur', blurHandler);
       handleAnalytics('exit');
     };
   }, []);
