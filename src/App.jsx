@@ -29,7 +29,7 @@ function App() {
       type: type,
       timeSpent: type === "enter" ? null : timeSpent,
       session: uuidRef.current,
-      feature: 'BestTake',
+      feature: 'NightSight',
     };
     console.log(obj);
 
